@@ -1,0 +1,60 @@
+﻿/*@l3ny l3ny.com*/
+.fm_form {
+    font: 15px arial;
+    padding: 20px;
+    display: block;
+}
+.fm_ringed { margin-bottom: 15px; }
+.fm_label {
+    color: #657788;
+    margin-bottom: 5px;
+}
+.fm_TextBox, .fm_Message {
+    border: 1px solid #ccc;
+    color: #25313C;
+    width: auto;
+}
+.fm_TextBox:hover, .fm_Message:hover {
+    border-color: #54cbe0;
+    box-shadow: 0 0 8px rgba(82, 168, 236, .6);
+}
+.fm_Message {
+    width: 400px;
+    margin: 2px;
+}
+.fm_Button, .fm_Button:active, .fm_Button:focus {
+    color: white;
+    height: 28px;
+    padding: 0 15px;
+    border: 1px solid;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #54cbe0;
+    background-image: -webkit-linear-gradient(top, #54cbe0 0, #189fb7 100%);
+    background-image: -moz-linear-gradient(top, #54cbe0 0, #189fb7 100%);
+    background-image: -ms-linear-gradient(top, #54cbe0 0, #189fb7 100%);
+    background-image: -o-linear-gradient(top, #54cbe0 0, #189fb7 100%);
+    background-image: linear-gradient(top, #54cbe0 0, #189fb7 100%);
+    background-position: 0 0;
+    box-shadow: none;
+}
+.fm_Button:hover {
+    background-color: #00a9c7;
+    background-image: -webkit-linear-gradient(top, #00a9c7 0, #007d93 100%);
+    background-image: -moz-linear-gradient(top, #00a9c7 0, #007d93 100%);
+    background-image: -ms-linear-gradient(top, #00a9c7 0, #007d93 100%);
+    background-image: -o-linear-gradient(top, #00a9c7 0, #007d93 100%);
+    background-image: linear-gradient(top, #00a9c7 0, #007d93 100%);
+    box-shadow: inset 0 0 4px #2292a8;
+}
+label.error {
+    background-color: #FF6565;
+    color: white;
+    padding: 2px 1em;
+    margin-left: 2px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    label[for=txtMessage] {
+        vertical-align: super;
+    }
+}

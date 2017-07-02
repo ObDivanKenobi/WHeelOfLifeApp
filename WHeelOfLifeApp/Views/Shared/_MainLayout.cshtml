@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="height=device-height" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <style>
+        .container {
+            padding-top: 10px;
+        }
+        .validation-summary-errors {
+            color: #f00;
+        }
+        .page-header{
+            width: 100%;
+        }
+    </style>
+    @RenderSection("Styles", required: false)  
+    <script type="text/javascript" src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <style>
+        /*Убирает "прыжки" страницы при появлении скролла*/
+        html{
+            width:100vw;
+            overflow-x:hidden;
+        }
+        /*Костыль под модальные окна Bootstrap, у которых есть баг с добавлением padding-right к body*/
+        body{
+            padding-right: 0px !important;
+        }
+        .alert.alert-danger{
+            color: #000;
+        }
+    </style>
+</head>
+<body class="container">
+    @RenderSection("ModalWindows", required: false)
+    <div class="container-fluid">
+        <div class="page-header" style="text-align:right;">
+            @if (Request.IsAuthenticated)
+            {
+                <span>Добро пожаловать, </span>@User.Identity.Name<span>&nbsp;&nbsp;&nbsp;</span> @Html.ActionLink("Выйти", "LogOut", "Auth", new { returnUrl = Request.Url }, new { @class = "btn btn-warning" })
+            }
+            else
+            {
+                @Html.ActionLink("Войти", "LogIn", "Auth", new { returnUrl = Url }, new { @class = "btn btn-success" })<span> или </span>@Html.ActionLink("Зарегистрироваться", "Register", "Auth", null, new { @class = "btn btn-primary" })
+            }
+        </div>
+    </div>
+    <div class="row">
+        @RenderBody()
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

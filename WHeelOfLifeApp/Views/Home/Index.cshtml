@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/ChartStyle.css" rel="stylesheet" />
+    <style>
+        #chart-wrapper{
+            position: relative;
+            width: 100%;
+        }
+        .chart-frame{
+            position: absolute;
+            top:0;
+            left:0;
+            z-index:-1;
+            width: 100%;
+            height: 0px;
+        }
+        .panel-heading{
+            text-align: center;
+        }
+        svg{
+            margin: auto;
+        }
+    </style>   
+}
+
+@section ModalWindows{
+    <div id="modalAddCategory" class="modal fade">
+        @Html.Action("AddCategory")
+    </div>
+    <div id="modalChangeCategory" class="modal fade">
+        @Html.Action("ChangeCategory")
+    </div>  
+    <div id="modalAddTask" class="modal fade">
+        @Html.Action("AddTask")
+    </div>   
+    <div id="modalChangeTask" class="modal fade">
+        @Html.Action("ChangeTask")
+    </div>
+}
+
+<div class="col-md-7">
+    <div id="chart-wrapper" style="text-align:center">
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Мои задачи
+        </div>
+        <div id="panel-tasks" class="panel-body">
+            @Html.Action("GetTasks")
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-success" href="#" onclick="showAddCategory()">Добавить категорию</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/d3.v3.min.js"></script>
+    <script src="~/Scripts/d3-tip.js"></script>
+    <script src="~/Scripts/ResizeSensor.js"></script>
+    <script type="text/javascript" src="~/Scripts/DrawChart.js"></script>
+    <script type="text/javascript">
+        var openedTabIndexes = [];
+        function getOpenedTabs() {
+            var panels = $('.panel-collapse');
+            openedTabIndexes = [];
+            var openedTabs = $('.panel-collapse').filter('.in').each(function (index, element) {
+                var elementIndex = $('.panel-collapse').index(element);
+                openedTabIndexes.push(elementIndex);
+            });
+        }
+        function reopenTabs() {
+            openedTabIndexes.forEach(function (item) {
+                var tabToOpen = $('.panel-collapse').eq(item);
+                tabToOpen.collapse('toggle');
+            })
+        }
+        function onDataUpdate() {
+            reopenTabs();
+            DrawChart();
+        }
+        function showAddCategory() {
+            $('#modalAddCategory').load('@Url.Action("AddCategory", "Home", null)', function () { $('#modalAddCategory').modal('show'); });
+        }
+        function onAddCategorySuccess() {
+            if ($('#isNewCategoryValid').val() == "True") {
+                $('input[name=CategoryName]').val("");
+                $('#modalAddCategory').modal('hide');
+                getOpenedTabs()
+                $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
+            }
+        }
+        function onUpdateCategorySuccess() {
+            if ($('#isUpdatedCategoryValid').val() == "True"){
+                $('input[name=NewCategoryName]').val("");
+                $('#modalChangeCategory').modal('hide');
+                getOpenedTabs();
+                $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
+            }
+        }
+        function onAddTaskSuccess() {
+            if ($('#isAddedTaskValid').val() == "True") {
+                $('input[name=NewTaskTitle]').val("");
+                $('#modalAddTask').modal('hide');
+                getOpenedTabs();
+                $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
+            }
+        }
+        function onUpdateTaskSuccess() {
+            if ($('#isUpdatedTaskValid').val() == "True") {
+                $('#modalChangeTask').modal('hide');
+                getOpenedTabs();
+                $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
+            }
+        }
+        function DrawChart() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetData", "Home", null)',
+                dataType: 'json',
+                success: function (data) {
+                    drawChart(data);
+                }
+            });
+        }
+
+        var chartWrapper = document.getElementById('chart-wrapper');
+        function onChartClick(label) {
+            var id = label.replace(/ /g, "_").replace(/-/g, "_");
+            $('#' + id).collapse('toggle');
+        }
+        function resizeWrapper() {
+            var height = chartWrapper.offsetHeight;
+            var width = chartWrapper.offsetWidth;
+            chartWrapper.style.height = width + "px";
+        }
+        new ResizeSensor(chartWrapper, function () {
+            resizeWrapper();
+            DrawChart();
+        });
+
+        resizeWrapper();
+        DrawChart();
+    </script>
+}
+

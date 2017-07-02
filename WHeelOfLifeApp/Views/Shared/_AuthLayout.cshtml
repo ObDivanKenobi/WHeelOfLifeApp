@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="~/Scripts/jquery-3.1.1.min.js"></script>
+</head>
+<body class="container">
+    <div class="page-header">
+        Header
+    </div>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <style>
+        .container {
+            padding-top: 10px;
+        }
+        .validation-summary-errors {
+            color: #f00;
+        }
+    </style>
+</body>
+</html>

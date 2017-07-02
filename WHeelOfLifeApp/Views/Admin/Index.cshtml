@@ -1,0 +1,108 @@
+﻿@using WheelOfLifeApp.Models.Auth;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@*@model IEnumerable<ApplicationUser>*@
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="panel panel-primary">
+    <h3 class="panel-heading">Панель администрирования</h3>
+    <div class="panel-body">
+        <ul class="nav nav-pills">
+            <li class="active"><a href="#users" data-toggle="tab">Пользователи</a></li>
+            <li><a href="#roles" data-toggle="tab">Роли</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="users">
+                <div class="panel-heading">
+                    Учетные записи
+                </div>
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>Id</th>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th style="min-width: 150px"></th>
+                    </tr>
+                    @if (ViewBag.Users.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Нет ни одной учетной записи</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (ApplicationUser user in ViewBag.Users)
+                        {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td>
+                                    @using (Html.BeginForm("DeleteUser", "Admin", new { id = user.Id }))
+                                    {
+                                        <button class="btn btn-danger btn-xs" type="submit">Удалить</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+                @Html.ActionLink("Добавить пользователя", "Register", "Auth", null, new { @class = "btn btn-primary" })
+            </div>
+            <div class="tab-pane" id="roles">
+                <div>
+                    <div class="panel-heading">
+                        Роли
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <th>Название</th>
+                            <th class="text-center">Пользователей в роли</th>
+                            <th style="min-width: 150px"></th>
+                        </tr>
+                        @if (ViewBag.Roles?.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">Нет ни одной роли</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (IdentityRole role in ViewBag.Roles)
+                            {
+                                <tr>
+                                    <td>@role.Id</td>
+                                    <td>@role.Name</td>
+                                    <td>
+                                        @if (role.Users?.Count == 0)
+                                        {
+                                            @: Нет пользователей в этой роли.
+                                        }
+                                        else
+                                        {
+                                            @role.Users.Count
+                                        }
+                                    </td>
+                                    <td>
+                                        @using (Html.BeginForm("DeleteRole", "Admin", new { id = role.Id }))
+                                        {
+                                            @Html.ActionLink("Изменить", "EditRole", new { id = role.Id },
+                                                new { @class = "btn btn-primary btn-xs", style = "float:left; margin-right:5px" })
+                                            <button class="btn btn-danger btn-xs" type="submit">Удалить</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                    @Html.ActionLink("Добавить роль", "CreateRole", "Admin", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

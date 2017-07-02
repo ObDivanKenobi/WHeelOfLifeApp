@@ -1,0 +1,47 @@
+﻿@model WheelOfLifeApp.Models.ChangeTaskViewModel
+@{
+    AjaxOptions updateTask = new AjaxOptions
+    {
+        UpdateTargetId = "modalChangeTask",
+        AllowCache = false,
+        InsertionMode = InsertionMode.Replace,
+        OnSuccess = "onUpdateTaskSuccess"
+    };
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Ajax.BeginForm("ChangeTask", "Home", null, updateTask, new { @id = "addTaskForm" }))
+        {
+            <input id="isUpdatedTaskValid" type="hidden" name="isValid" value="@Html.AttributeEncode(Model.IsValid)" />
+            @Html.HiddenFor(x => x.OldTitle, Model?.OldTitle ?? "")
+            @Html.HiddenFor(x => x.RelatedCategory, Model?.RelatedCategory ?? "")
+            <div class="modal-header">
+                <button type="button" class="close" onclick="form.reset()" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Изменение задачи</h4>
+            </div>
+            <div class="modal-body">
+                @Html.ValidationSummary(false, "Обнаружены следующие ошибки:", new { @class = "alert alert-danger" })
+                <div class="form-group">
+                    <label>Название задачи</label>
+                    @Html.TextBoxFor(x => x.NewTitle, new { @class = "form-control", Value = Model?.OldTitle ?? "" })
+                </div>
+                @if (Model.Categories != null)
+                {
+                    <div class="form-group">
+                        <label>Категория</label>
+                        @Html.DropDownListFor(x => x.NewCategory, Model.Categories, new { @class = "form-control" })
+                    </div>
+                }
+                <div class="form-group">
+                    <label>Описание задачи</label>
+                    @Html.TextAreaFor(x => x.Text, new { @class = "form-control", @value = Model?.Text ?? "" })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="form.reset()" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-success">Сохранить изменения</button>
+            </div>
+        }
+    </div>
+</div>

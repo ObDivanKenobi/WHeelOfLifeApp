@@ -1,0 +1,18 @@
+﻿@model WheelOfLifeApp.Models.Admin.CreateRoleViewModel
+@{
+    ViewBag.Title = "Создание роли";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Создать роль</h2>
+@Html.ValidationSummary(false)
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label>Название</label>
+        @Html.TextBoxFor(x => x.RoleName, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+    @Html.ActionLink("Отмена", "Index", null, new { @class="btn btn-default"})
+}
+

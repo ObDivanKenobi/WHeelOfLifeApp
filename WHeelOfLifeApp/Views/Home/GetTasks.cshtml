@@ -1,0 +1,139 @@
+﻿@using WheelOfLifeApp.Models
+@model Dictionary<string, List<Task>>
+@{
+    Layout = null;
+}
+
+<div class="panel-group" id="collapsable-tasks">
+@if (Model.Count == 0)
+{
+    <div>
+        <p>Вы пока не добавили ни одной категории!</p>
+    </div>
+}
+else
+{
+foreach (var entry in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#@entry.Key.Replace('.','-').Replace(" ", "_")">@entry.Key</a>
+            </h4>
+        </div>
+        <div id="@entry.Key.Replace('.','-').Replace(" ", "_")" class="panel-collapse collapse">
+            <div class="panel-body">
+                @if (entry.Value.Count == 0)
+                {
+                    <div>
+                        <p>Вы пока не добавили ни одной задачи в категорию.</p>
+                    </div>
+                }
+                else
+                {
+                    <table class="table">
+                        @foreach (Task t in entry.Value)
+                        {
+                            <tr class="@(t.IsDone?"success":"danger")">
+                                <td colspan="2">
+                                    <p class="h5">@t.Title</p>    
+                                </td>
+                            </tr>
+                            if (!string.IsNullOrWhiteSpace(t.Text))
+                            {
+                            <tr class="@(t.IsDone?"success":"danger")">
+                                <td colspan="2">
+                                    <p>@t.Text</p>
+                                </td>
+                            </tr>
+                            }
+                            <tr>
+                                <td class="text-left">
+                                    @if (t.IsDone)
+                                    {
+                                        @Ajax.ActionLink("Не сделано", "UpdateTaskStatus", "Home",
+                                             new { categoryName = entry.Key, taskTitle = t.Title, isDone = false },
+                                             new AjaxOptions
+                                             {
+                                                 UpdateTargetId = "panel-tasks",
+                                                 AllowCache = false,
+                                                 InsertionMode = InsertionMode.Replace,
+                                                 OnBegin = "getOpenedTabs",
+                                                 OnSuccess = "onDataUpdate"
+                                             }, new { @class = "btn btn-xs btn-danger" });
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Сделано", "UpdateTaskStatus", "Home",
+                                            new { categoryName = entry.Key, taskTitle = t.Title, isDone = true },
+                                            new AjaxOptions
+                                            {
+                                                UpdateTargetId = "panel-tasks",
+                                                AllowCache = false,
+                                                InsertionMode = InsertionMode.Replace,
+                                                OnBegin = "getOpenedTabs",
+                                                OnSuccess = "onDataUpdate"
+                                            }, new { @class = "btn btn-xs btn-success" });
+                                    }
+                                </td>
+                                <td class="text-right">
+                                    @Ajax.ActionLink("Изменить", "ChangeTask", "Home",
+                                        new { categoryName = entry.Key, taskTitle = t.Title },
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "modalChangeTask",
+                                            AllowCache = false,
+                                            InsertionMode = InsertionMode.Replace
+                                        }, new { @class = "btn btn-xs btn-warning", @data_toggle = "modal", @data_target = "#modalChangeTask" })
+                                    @Ajax.ActionLink("Удалить", "RemoveTask", "Home",
+                                        new { categoryName = entry.Key, taskTitle = t.Title },
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "panel-tasks",
+                                            AllowCache = false,
+                                            InsertionMode = InsertionMode.Replace,
+                                            OnBegin = "getOpenedTabs",
+                                            OnSuccess = "onDataUpdate"
+                                        }, new { @class = "btn btn-xs btn-danger" })
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+            <div class="panel-footer">
+                @Ajax.ActionLink("Изменить", "ChangeCategory", "Home",
+                    new { categoryName = entry.Key },
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "modalChangeCategory",
+                        AllowCache = false,
+                        InsertionMode = InsertionMode.Replace
+                    }, new { @class = "btn btn-sm btn-warning", @data_toggle = "modal", @data_target = "#modalChangeCategory" })
+                @Ajax.ActionLink("Удалить", "RemoveCategory", "Home",
+                    new { categoryName = entry.Key },
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "panel-tasks",
+                        AllowCache = false,
+                        InsertionMode = InsertionMode.Replace,
+                        OnBegin = "getOpenedTabs",
+                        OnSuccess = "onDataUpdate"
+                    }, new { @class = "btn btn-sm btn-danger" })
+                @Ajax.ActionLink("Добавить задачу", "AddTask", "Home",
+                    new { categoryName = entry.Key },
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "modalAddTask",
+                        AllowCache = false,
+                        InsertionMode = InsertionMode.Replace
+                        //InsertionMode = InsertionMode.Replace,
+                        //OnBegin = "getOpenedTabs",
+                        //OnSuccess = "reopenTabs"
+                    }, new { @class = "btn btn-sm btn-success", @data_toggle = "modal", @data_target = "#modalAddTask" })
+            </div>
+        </div>
+     </div>
+}
+}
+</div>

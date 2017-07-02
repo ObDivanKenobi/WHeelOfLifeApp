@@ -1,0 +1,33 @@
+﻿@model WheelOfLifeApp.Models.Auth.Register
+
+@{
+    ViewBag.Title = "Зарегистрироваться";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<h2>Регистрация</h2>
+@Html.ValidationSummary(false)
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label>Имя</label>
+        @Html.TextBoxFor(x => x.Username, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Пароль</label>
+        @Html.PasswordFor(x => x.Password, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Повторите пароль</label>
+        @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+
+    @Html.ActionLink("Отмена", "Index", "Admin", null, new { @class = "btn btn-default" })
+}
+
+

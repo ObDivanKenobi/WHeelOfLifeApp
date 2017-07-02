@@ -4,8 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using WheelOfLifeApp.App_Start;
 
-namespace WHeelOfLifeApp
+namespace WheelOfLifeApp
 {
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -13,6 +14,7 @@ namespace WHeelOfLifeApp
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
     }
 }

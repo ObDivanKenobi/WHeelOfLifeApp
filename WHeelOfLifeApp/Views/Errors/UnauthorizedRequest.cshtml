@@ -1,0 +1,15 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Ошибка";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<div class="alert alert-danger">
+    У вас недостаточно прав для доступа к запрошенной странице!
+</div>
+@Html.ActionLink("На главную", "Index", "Home", null, new { @class = "btn btn-default" })<span> или </span>
+@if (Request.IsAuthenticated)
+    {@Html.ActionLink("Перезайти", "Login", "Auth", null, new { @class = "btn btn-success" }) }
+else
+    {@Html.ActionLink("Войти", "LogIn", "Auth", null, new { @class = "btn btn-success" })}
+<span> или </span>@Html.ActionLink("Зарегистрироваться", "Register", "Auth", null, new { @class = "btn btn-primary" })
