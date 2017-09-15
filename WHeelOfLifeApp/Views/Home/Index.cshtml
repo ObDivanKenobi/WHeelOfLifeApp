@@ -67,6 +67,7 @@
     <script type="text/javascript" src="~/Scripts/DrawChart.js"></script>
     <script type="text/javascript">
         var openedTabIndexes = [];
+
         function getOpenedTabs() {
             var panels = $('.panel-collapse');
             openedTabIndexes = [];
@@ -75,19 +76,23 @@
                 openedTabIndexes.push(elementIndex);
             });
         }
+
         function reopenTabs() {
             openedTabIndexes.forEach(function (item) {
                 var tabToOpen = $('.panel-collapse').eq(item);
                 tabToOpen.collapse('toggle');
             })
         }
+
         function onDataUpdate() {
             reopenTabs();
             DrawChart();
         }
+
         function showAddCategory() {
             $('#modalAddCategory').load('@Url.Action("AddCategory", "Home", null)', function () { $('#modalAddCategory').modal('show'); });
         }
+
         function onAddCategorySuccess() {
             if ($('#isNewCategoryValid').val() == "True") {
                 $('input[name=CategoryName]').val("");
@@ -96,6 +101,7 @@
                 $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
             }
         }
+
         function onUpdateCategorySuccess() {
             if ($('#isUpdatedCategoryValid').val() == "True"){
                 $('input[name=NewCategoryName]').val("");
@@ -104,6 +110,7 @@
                 $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
             }
         }
+
         function onAddTaskSuccess() {
             if ($('#isAddedTaskValid').val() == "True") {
                 $('input[name=NewTaskTitle]').val("");
@@ -112,6 +119,7 @@
                 $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
             }
         }
+
         function onUpdateTaskSuccess() {
             if ($('#isUpdatedTaskValid').val() == "True") {
                 $('#modalChangeTask').modal('hide');
@@ -119,6 +127,7 @@
                 $('#panel-tasks').load('@Url.Action("GetTasks", "Home", null)', function () { onDataUpdate(); });
             }
         }
+
         function DrawChart() {
             $.ajax({
                 type: 'POST',
@@ -131,6 +140,7 @@
         }
 
         var chartWrapper = document.getElementById('chart-wrapper');
+
         function onChartClick(label) {
             var id = label.replace(/ /g, "_").replace(/-/g, "_");
             $('#' + id).collapse('toggle');
@@ -140,6 +150,7 @@
             var width = chartWrapper.offsetWidth;
             chartWrapper.style.height = width + "px";
         }
+
         new ResizeSensor(chartWrapper, function () {
             resizeWrapper();
             DrawChart();

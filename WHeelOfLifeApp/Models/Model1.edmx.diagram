@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3ae0358f17204b18b42b317746167e8e" Name="Diagram1">
+        <EntityTypeShape EntityType="WheelOfLifeDbModel.AspNetRole" Width="1.5" PointX="0.875" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WheelOfLifeDbModel.AspNetUserClaim" Width="1.5" PointX="5.5" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WheelOfLifeDbModel.AspNetUserLogin" Width="1.5" PointX="7.5" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WheelOfLifeDbModel.AspNetUser" Width="1.5" PointX="3.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WheelOfLifeDbModel.Category" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WheelOfLifeDbModel.Task" Width="1.5" PointX="7.5" PointY="6.5" IsExpanded="true" />
+        <AssociationConnector Association="WheelOfLifeDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="WheelOfLifeDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="WheelOfLifeDbModel.FK_dbo_Categories_dbo_AspNetUsers_Owner_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="WheelOfLifeDbModel.FK_dbo_Tasks_dbo_Categories_Category_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="WheelOfLifeDbModel.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
